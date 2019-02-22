@@ -1,0 +1,34 @@
+{
+  "name": "HTTPAPIHW",
+  "version": "1.0.0",
+  "engines": {
+    "node": "11.7.0",
+    "npm": "6.5.0"
+  },
+  "description": "\"API Homework\"",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests Complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaurenCBullock/http-api-assignment.git"
+  },
+  "author": "Lauren Bullock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LaurenCBullock/"
+  },
+  "homepage": "N/A",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.15.0",
+    "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    
+  }
+}
