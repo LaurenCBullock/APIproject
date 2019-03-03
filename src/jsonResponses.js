@@ -13,7 +13,6 @@ const respondJSON = (request, response, status, object) => {
 };
 
 
-
 // function to respond without json body
 // takes request, response and status code
 const respondJSONMeta = (request, response, status) => {
@@ -86,7 +85,7 @@ const addComment = (request, response, body) => {
   const responseJSON = {
     message: body.name + body.comment,
   };
-    console.log(responseJSON);
+  console.log(responseJSON);
 
   // check to make sure we have both fields
   // We might want more validation than just checking if they exist
@@ -109,21 +108,19 @@ const addComment = (request, response, body) => {
   } */
   // if {
   // otherwise create an object with that name
-    if(users[body.name].comments == null){
-       users[body.name].comments = {};
-        users[body.name].comments = new Array();
-        users[body.name].comments.push(body.comment)
-       }
-    else{
-         users[body.name].comments.push(body.comment);
-    }
-  
+  if (users[body.name].comments == null) {
+    users[body.name].comments = {};
+    users[body.name].comments = [];
+    users[body.name].comments.push(body.comment);
+  } else {
+    users[body.name].comments.push(body.comment);
+  }
+
   // }
   console.dir(users[body.name].comments);
   users[body.name].comments.forEach((element) => {
     console.log(element);
   });
-
 
 
   // if response is created, then set our created message
