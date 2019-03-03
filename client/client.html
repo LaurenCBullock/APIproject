@@ -5,12 +5,15 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+    
   <script type="text/babel">
 
   const parseJSON = (xhr, content) => {
       //parse response (obj will be empty in a 204 updated)
       const obj = JSON.parse(xhr.response);
-      //console.dir(obj);
       
       //if message in response, add to screen
       if(obj.message) {
@@ -33,17 +36,62 @@
               const name = document.createElement('b');
               const url = document.createElement('img');
               const desc = document.createElement('p');
+              
+              
+              
+              
+              //making the box for adding comments after a post
+              const commentBox = document.createElement('div');
+              const newComment = document.createElement('textarea');
+              const commButton = document.createElement('input');
+              newComment.setAttribute("id", "comment");
+              commentBox.setAttribute("id", "commentBox");
+              commButton.setAttribute("type", "submit");
+               commButton.setAttribute("value", "Submit Comment");
+              commButton.setAttribute("id", "addCommentButt");
+              
+              //append comment stuff to the comment box
+              newComment.setAttribute("class", "centered");
+              commButton.setAttribute("class", "centered");
+              
+              
+              if(obj.users[key].comments != null){
+                  for(let i = 0; i<obj.users[key].comments.length; i++){
+                    console.log(obj.users[key].comments[i]);  
+                    const comments = document.createElement('div');
+                      comments.textContent = obj.users[key].comments[i];
+                      commentBox.appendChild(comments);
+                  }
+                 //console.log(obj.users[key].comments.length);
+                 }
+              commentBox.appendChild(newComment);
+              commentBox.appendChild(commButton);
+             
+              
+              
+              //set name, image, and description
               name.textContent= obj.users[key].name;
               url.src = obj.users[key].url;
               desc.textContent = obj.users[key].desc;
+              name.setAttribute('id',`${name}`)
               
+              //append image data to page
               thisBlock.appendChild(name);
               thisBlock.appendChild(url);
               thisBlock.appendChild(desc);
+              thisBlock.appendChild(commentBox);
               imageList.appendChild(thisBlock);
               thisBlock.setAttribute("id", "imageblock");
-              //imageList.textContent = `<b>${obj.users[key].name}</b><img src=${obj.users[key].url}><p>${obj.users[key].desc}</p>`;
+              
+              
             content.appendChild(imageList);
+              
+               //add event listener to comment button
+              const commentForm = document.querySelector('#commentBox');
+              //console.log(commentForm + " Form for comments");
+              const addComment = (e) => sendPostComment(e, commentForm, name);
+              //console.log(addComment + " method for comments");
+              document.querySelector('#addCommentButt').onclick = addComment;
           }
         }
           
@@ -132,6 +180,48 @@
       //return false to prevent the browser from trying to change page
       return false;
     };
+
+
+    const sendPostComment = (e, commentForm, parent) => {
+        
+          //grab the forms action (url to go to)
+          //and method (HTTP method - POST in this case)
+
+          //const nameMethod = nameForm.getAttribute('method');
+
+          //grab the form's name and age fields so we can check user input
+          const commentField = commentForm.querySelector('#comment');
+        
+          //create a new Ajax request (remember this is asynchronous)
+          const xhr = new XMLHttpRequest();
+          //set the method (POST) and url (action field from form)
+          xhr.open('POST', '/addComment');
+
+          //set our request type to x-www-form-urlencoded
+          //which is one of the common types of form data. 
+          //This type has the same format as query strings key=value&key2=value2
+          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          //set our requested response type in hopes of a JSON response
+          xhr.setRequestHeader ('Accept', 'application/json');
+
+          //set our function to handle the response
+          xhr.onload = () => handleResponse(xhr, true);
+        
+          //So ours might look like  name=test&age=22
+          //Again the 'name' fields in the form are the variable names in the string
+          //and the variable names the server will look for.
+          const formData = `name=${parent.textContent}&comment=${commentField.value}`;
+        //console.log(formData);
+          //console.dir(formData);
+          //send our request with the data
+        //console.log(parent);
+          xhr.send(formData);
+            console.dir(formData);
+          //prevent the browser's default action (to send the form on its own)
+          e.preventDefault();
+          //return false to prevent the browser from trying to change page
+          return false;
+        };
 
 
 

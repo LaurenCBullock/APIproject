@@ -34,6 +34,7 @@ b{
     display: block;
 }
 #imageblock{
+padding: 20px;
     background-color: rgba(176, 206, 222, 0.76);
     margin: 10px;
     display: inline-block;
@@ -50,4 +51,8 @@ b{
 }
 #methodSelect, #urlField, #imgSubButt {
     height: 25px;
+}
+.centered{
+    display: block;
+    margin: auto;
 }
